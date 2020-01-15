@@ -10,4 +10,10 @@ To use the script, run it:
 
     git clone https://github.com/ZeweiSong/Fantastic-Genomes-And-Where-To-Find-Them
     cd Fantastic-Genomes-And-Where-To-Find-Them
+    chmod 744 fantastic_genomes_and_where_to_get_them.sh
     ./fantastic_genomes_and_where_to_get_them.sh
+
+You can run the two scripts independently too.
+This command will get a GTDB style taxonomy file and a dwonload list for all fungi:
+
+    scripts/get_download_summary_for_clades.py Fungi
