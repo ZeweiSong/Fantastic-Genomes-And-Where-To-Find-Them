@@ -28,7 +28,7 @@ parser.add_argument('clade', choices=['Fungi', 'Prokaryota', 'Virus', 'Metazoa',
                     help='Specify a clade to parse.')
 args = parser.parse_args()
 clade = args.clade
-# Check Unclassified redundancy
+# Check Unclassified (and Candida) redundancy
 def fix_unclassified(taxa):
     if type(taxa) != 'list':
         taxa = taxa.split(';')
@@ -44,6 +44,8 @@ def fix_unclassified(taxa):
                 name = taxa[i-1][3:]
             elif item[3:] == 'Unclassified' and taxa[i-1][3:] == 'Unclassified':
                 taxa_nr.append(item + name)
+            elif item[3:] == 'Candida':
+                taxa_nr.append(item + taxa[i-1][3:])
             else:
                 taxa_nr.append(item)
     return taxa_nr
@@ -51,8 +53,8 @@ def fix_unclassified(taxa):
 # An example taxonomy string
 #t = 'd__Protozoa;p__Unclassified;c__Filasterea;o__Unclassified;f__Unclassified;g__Capsaspora;s__Capsaspora owczarzaki'
 
-term = {'Fungi':((1, 'Fungi'),), 'Prokaryote':((0, 'Bacteria'), (0, 'Archaea')), \
-        'Virus':((0, 'Viruses'),), 'Metazoa':((1, 'Metazoa'),), 'Viridiplantae':((1, 'Viridiplantae')),\
+term = {'Fungi':((1, 'Fungi'),), 'Prokaryota':((0, 'Bacteria'), (0, 'Archaea')), \
+        'Virus':((0, 'Viruses'),), 'Metazoa':((1, 'Metazoa'),), 'Viridiplantae':((1, 'Viridiplantae'),),\
         'Unclassified_Eukaryota':((0, 'Eukaryota'), (1, 'Unclassified'))}
 genome_type = {'reference genome':'RS_', 'representative genome':'RS_', 'na':'GB_'}
 
@@ -116,4 +118,4 @@ print('Found {0} genomes availabe in NCBI genomes FTP.'.format(count))
 print('Need to download {0} genomes.'.format(count_to_fetch))
 print('The FTP list is in {0}.'.format('ncbi_' + clade + '_genomes_download.txt'))
 print('You can download them in parallel using:\n')
-print('cat {0} | parallel -j 4 wget -q -c {1} --directory-prefix=genomes'.format('ncbi_' + clade + '_genomes_download.txt', '{}'))
+print('cat {0} | parallel -j 4 wget -q -c {1} --directory-prefix=genomes_{2}'.format('ncbi_' + clade + '_genomes_download.txt', '{}', clade))
