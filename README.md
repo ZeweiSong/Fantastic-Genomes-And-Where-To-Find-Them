@@ -17,3 +17,5 @@ You can run the two scripts independently too.
 This command will get a GTDB style taxonomy file and a dwonload list for all fungi:
 
     scripts/get_download_summary_for_clades.py Fungi
+
+Availabel clades are: Fungi, Prokaryota, Virus, Metazoa, Viridiplantae, and Unclassified_Eukaryota.
