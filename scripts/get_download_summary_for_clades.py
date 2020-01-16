@@ -48,7 +48,11 @@ def fix_unclassified(taxa):
                 taxa_nr.append(item + taxa[i-1][3:])
             else:
                 taxa_nr.append(item)
-    return taxa_nr
+    if taxa == taxa_nr:
+        value = 0
+    else:
+        value = 1
+    return (taxa_nr, value)
 
 # An example taxonomy string
 #t = 'd__Protozoa;p__Unclassified;c__Filasterea;o__Unclassified;f__Unclassified;g__Capsaspora;s__Capsaspora owczarzaki'
@@ -64,27 +68,34 @@ if clade in term:
 else:
     print('{0} is not a legal clade.'.format(clade))
 
+print('Now parsing the genomes in NCBI ...')
 content = []
 with open('ncbi_genbank_genomes.txt', 'r') as f:
     for line in f:
         line = line.strip('\n').split('\t')
         if clade != 'Unclassified_Eukaryota':
             for search in term[clade]:
-                if line[search[0]+1] == search[1]:
+                if line[search[0]+1] == search[1] and line[-1] != 'na': # need to check if the FTP is 'na'
                     content.append([line[0], line[search[0]+1]] + line[2:])
                 else:
                     pass
         else:
-            if line[term[clade][0][0]+1] == term[clade][0][1] and line[term[clade][1][0]+1] == term[clade][1][1]:
+            if line[term[clade][0][0]+1] == term[clade][0][1] and line[term[clade][1][0]+1] == term[clade][1][1] and line[-1] != 'na': # need to check if the FTP is 'na'
                 content.append([line[0], clade] + line[2:])
 
+count = 0
 with open('ncbi_' + clade + '_gtdb_taxonomy.txt', 'wt') as f:
     for line in content:
         line[8] = line[8].replace(' ', '_')
         taxa = 'd__' + line[1] + ';p__' + line[3] + ';c__' + line[4] + ';o__' + line[5] + ';f__' + line[6] + ';g__' + line[7] + ';s__' + line[8]
-        taxa = ';'.join(fix_unclassified(taxa))
+        taxa = fix_unclassified(taxa)
+        count += taxa[1]
         accid = genome_type[line[10]] + line[9]
-        f.write('{0}\t{1}\n'.format(accid, taxa))
+        f.write('{0}\t{1}\n'.format(accid, ';'.join(taxa[0])))
+
+print('Finished analysis.')
+print('\tFound {0} genomes with FTP link.'.format(len(content)))
+print('\tFixed {0} taxa with ambiguous names.'.format(count))
 
 folder = Path('genomes_' + clade)
 finished_list = {}
@@ -115,7 +126,12 @@ with open('ncbi_' + clade + '_genomes_download.txt', 'wt',newline='') as f:
             count_to_fetch += 1
             f.write('{0}\n'.format(link))
 print('Found {0} genomes availabe in NCBI genomes FTP.'.format(count))
-print('Need to download {0} genomes.'.format(count_to_fetch))
-print('The FTP list is in {0}.'.format('ncbi_' + clade + '_genomes_download.txt'))
-print('You can download them in parallel using:\n')
-print('cat {0} | parallel -j 4 wget -q -c {1} --directory-prefix=genomes_{2}'.format('ncbi_' + clade + '_genomes_download.txt', '{}', clade))
+if count_to_fetch != 0:
+    print('Need to download {0} genomes.'.format(count_to_fetch))
+    print('The FTP list for download is in {0}.'.format('ncbi_' + clade + '_genomes_download.txt'))
+    print('You can download them in parallel using:\n')
+    print('cat {0} | parallel -j 4 wget -q -c {1} --directory-prefix=genomes_{2}'.format('ncbi_' + clade + '_genomes_download.txt', '{}', clade))
+    print('check parallel -h for how to set the parameters.')
+else:
+    print('You have all the genomes in this clade.')
+
