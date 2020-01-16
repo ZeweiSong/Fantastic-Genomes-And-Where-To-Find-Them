@@ -20,7 +20,7 @@ This command will get a GTDB style taxonomy file and a dwonload list for all fun
 
     scripts/get_download_summary_for_clades.py Fungi
 
-Availabel clades are: Fungi, Prokaryota, Virus, Metazoa, Viridiplantae, and Unclassified_Eukaryota.
+Availabel clades are: Fungi, Prokaryota, Virus, Metazoa, Viridiplantae, and Unclassified_Eukaryota. The Unclassified_Eukaryota is mostly Protozoa.
 
 The output of get_download_summary_for_clades.py will be like:
 
