@@ -29,4 +29,11 @@ NCBI taxdump may contain some taxa name that have different parents. For example
     d__Fungi;p__Ascomycota;c__Unclassified;
     d__Fungi;p__Basidiomycota;c__Unclassified;
   
-Here the Phylum of c__Unclassified is not unique. This will create bias when reads are assigned to this bin, or when the taxonomic strcuture is used.
+Here the Phylum of c__Unclassified is not unique. This will create bias when reads are assigned to this bin, or when the taxonomic strcuture is used. Another problem maker is "g_Candida".
+
+We fix such inconsistence by assigning the upstream name to Unclassified or Candida. The taxonomic string above will be changed to:
+
+    d__Fungi;p__Ascomycota;c__UnclassifiedAscomycota;
+    d__Fungi;p__Basidiomycota;c__UnclassifiedBasidiomycota;
+
+fin
