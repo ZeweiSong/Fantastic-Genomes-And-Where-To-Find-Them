@@ -63,7 +63,7 @@ cat ncbi_Fungi_gtdb_taxonomy.txt ncbi_Unclassified_Eukaryota_taxonomy.txt ncbi_V
 # The script will check for redundant terms in all taxonomy. You need to run it several 
 # times, and fix those redundant terms everytime, until you got a clean pass.
 # Check for redundant terms and fix them all by hand (yes, you read in right)
-tax_from_gtdb.py --gtdb gtdb_AllMicro_taxonomy.txt
+scripts/tax_from_gtdb.py --gtdb gtdb_AllMicro_taxonomy.txt
 
 # Gether all genome fasta file into one folder using softlinks
 # Since there are too many files in a folder, we need to use
