@@ -110,6 +110,14 @@ else:
     print('I will create a new folder named "genomes_{0}"'.format(clade))
     os.makedirs(folder)
 
+downloaded_count = 0
+filenames = os.listdir('genomes_Prokaryota_1')
+for item in filenames:
+    downloaded_count += 1
+    accid = item[:15]
+    finished_list[accid] = item
+print('{0} genomes alreaded downloaded into another folder\n'.format(downloaded_count))
+
 count = 0
 count_to_fetch = 0
 with open('ncbi_' + clade + '_genomes_download.txt', 'wt',newline='') as f:
