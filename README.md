@@ -2,7 +2,7 @@
  
 # Introduction
 
-This is a simple pipeline for parsing the assembly summary of all genomes from NCBI.
+This is a simple pipeline for parsing the assembly summary of all genomes from NCBI. We have a pipeline on how to build a kraken2 index using customized genomes too.
 
 The summary file of genomes contains only the taxid. So we need to parse the taxonomy information using taxdump.
 
@@ -52,4 +52,8 @@ We fix such inconsistence by assigning the upstream name to Unclassified or Cand
     d__Fungi;p__Ascomycota;c__UnclassifiedAscomycota;
     d__Fungi;p__Basidiomycota;c__UnclassifiedBasidiomycota;
 
-fin
+# Build a Kraken2 index.
+
+Refer to fantastic_genomes_and_where_to_get_them.sh for an explaination on everystep.
+
+fin.
