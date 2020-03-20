@@ -1,3 +1,5 @@
+![alt text](https://github.com/ZeweiSong/Fantastic-Genomes-And-Where-To-Find-Them/blob/master/header.png)
+
 # Fantastic Genomes And Where To Find Them
  
 # Introduction
