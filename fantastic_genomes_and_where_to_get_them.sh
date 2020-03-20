@@ -106,5 +106,7 @@ tax_from_gtdb.py --gtdb gtdb_AllMicro_taxonomy.txt --assemblies genomes/unlabele
 # We can now add those genomes to the kraken2 library
 find genomes_kk2/ -name '*.fa' -print0 | xargs -0 -I{} -n1 kraken2-build --add-to-library {} --db theOneIndexForAll
 
-# Finally, we can build the index for kraken2
-kraken2-build --build --db $DBNAME
+# Finally, we can build the index for kraken2.
+# You will need a super large memory for calculating this index.
+# By super large I mean the size of TB, like 1TB.
+kraken2-build --build --db theOneIndexForAll
