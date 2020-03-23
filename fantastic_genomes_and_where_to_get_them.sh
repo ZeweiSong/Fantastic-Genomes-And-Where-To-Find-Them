@@ -109,4 +109,7 @@ find genomes_kk2/ -name '*.fa' -print0 | xargs -0 -I{} -n1 kraken2-build --add-t
 # Finally, we can build the index for kraken2.
 # You will need a super large memory for calculating this index.
 # By super large I mean the size of TB, like 1TB.
-kraken2-build --build --db theOneIndexForAll
+mkdir theOneIndexForAll/taxonomy
+cp toifa.name theOneIndexForAll/taxonomy/names.dmp
+cp toifa.tree theOneIndexForAll/taxonomy/nodes.dmp
+kraken2-build --build --db theOneIndexForAll --threads 4
