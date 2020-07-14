@@ -180,6 +180,7 @@ if args.action == 'search':
             pass
         elif c in ('N', 'n', 'No', 'no'):
             print('Thanks for using taxdumper.')
+            print('Taxdumper, Super Duper!')
             keep_going = False
 
 elif args.action == 'uptrace':
