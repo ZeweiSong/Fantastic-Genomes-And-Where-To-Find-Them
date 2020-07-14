@@ -136,7 +136,7 @@ with open(genome_summary, 'rb') as f:
             linear_string['ftp'] = line[19]
             linear_string['accid'] = line[0]
             linear_string['genome_type'] = line[4]
-            taxa.append(linear_string)
+            taxa.append((linear_string, line))
         except KeyError:
             no_record.append(line)
 
@@ -152,10 +152,12 @@ print('{0} records found legal taxonomic linear in taxdump.'.format(count - len(
 print('Writen into ncbi_genbank_genomes.txt.')
 
 with open('ncbi_genbank_genomes.txt', 'w') as f:
-    f.write('{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t{6}\t{7}\t{8}\t{9}\t{10}\t{11}\n'.format('taxid', 'superkingdom', 'kingdom', 'phylum', 'class', 'order', \
-                                                                'family', 'genus', 'species', 'accid', 'genome_type', 'ftp'))
+    f.write('{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t{6}\t{7}\t{8}\n'.format('superkingdom', 'kingdom', 'phylum', 'class', 'order', \
+                                                                'family', 'genus', 'species', \
+                                                                'assembly_accession\tbioproject\tbiosample\twgs_master\trefseq_category\ttaxid\tspecies_taxid\torganism_name\tinfraspecific_name\tisolate\tversion_status\tassembly_level\trelease_type\tgenome_rep\tseq_rel_date\tasm_name\tsubmitter\tgbrs_paired_asm\tpaired_asm_comp\tftp_path\texcluded_from_refseq\trelation_to_type_material'))
     for item in taxa:
-        taxid = item['species'][1]
-        f.write('{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t{6}\t{7}\t{8}\t{9}\t{10}\t{11}\n'.format(taxid, item['superkingdom'][0], item['kingdom'][0],\
-                item['phylum'][0], item['class'][0], item['order'][0], item['family'][0], item['genus'][0], item['species'][0], \
-                item['accid'], item['genome_type'], item['ftp']))
+        # item[0] contains the taxonomy string, item[1] is the original line.
+        taxid = item[0]['species'][1]
+        f.write('{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t{6}\t{7}\t{8}\n'.format(item[0]['superkingdom'][0], item[0]['kingdom'][0],\
+                item[0]['phylum'][0], item[0]['class'][0], item[0]['order'][0], item[0]['family'][0], item[0]['genus'][0], item[0]['species'][0], \
+                '\t'.join(item[1])))
