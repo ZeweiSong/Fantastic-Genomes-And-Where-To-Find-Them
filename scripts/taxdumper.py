@@ -16,13 +16,23 @@ Coders who love to comment their code are unlikely to have bad luck.
 from __future__ import print_function
 from __future__ import division
 import argparse
+import os
+import sys
 import networkx as nx
 
 print('Taxdumper, Super Duper!')
 
 parser = argparse.ArgumentParser()
-parser.add_argument('action', help='Choose the action to take.', nargs='?', choices=('search', 'uptrace', 'downtrace'))
+parser.add_argument('action', help='Choose the action to take.', nargs='?', choices=('download', 'search', 'uptrace', 'downtrace'))
 args = parser.parse_args()
+
+if args.action == 'download':
+    ftp_path = 'https://ftp.ncbi.nih.gov/pub/taxonomy/taxdump.tar.gz'
+    os.system('wget {0}'.format(ftp_path))
+    os.system('tar xvfz taxdump.tar.gz')
+    print('Taxdumper has downloaded taxdump!')
+    print('Taxdumper, Super Duper!')
+    sys.exit()
 #%%
 nodes_file = 'nodes.dmp' # nodes.dmp from taxdump.tar.gz downloaded from https://ftp.ncbi.nih.gov/pub/taxonomy/
 names_file = 'names.dmp' # names.dmp from taxdump.tar.gz downloaded from https://ftp.ncbi.nih.gov/pub/taxonomy/
@@ -187,42 +197,3 @@ elif args.action == 'uptrace':
     pass
 elif args.action == 'downtrace':
     pass
-#%%
-'''
-thesevens = ('species', 'genus', 'family', 'order', 'class', 'phylum', 'kingdom', 'superkingdom')
-result = ''
-taxid = 0
-query = '2502720'
-print('The term to search is {0}'.format(query))
-if query.isnumeric():
-    print('Seems the input term is a taxid')
-    query = int(query)
-    taxid = query
-    result = scientific_names.get(query, False)
-    if result:
-        print('The name of {0} is {1}'.format(query, result[0][0]))
-    else:
-        print('{0} not exist.'.format(query))
-else:
-    print('Seems the input term is a keyword')
-    result = thebigdict.get(query, False)
-    taxid = result
-    if result:
-        print('The taxid of {0} is '.format(result))
-    else:
-        print('{0} not exist'.format(query))
-if result:
-    print('The query is at level: {0}'.format(G.nodes[taxid]['level']))
-    result_uptrace = uptrace(taxid, G) # Get the linear of query node
-    linear = []
-    for i in thesevens:
-        node = result_uptrace.get(i, False)
-        if node:
-            linear.append('\t'+i+':\t'+G.nodes[node]['value'][0][0])
-    result_downtrace = downtrace(taxid, G) # Get all the closest anchor level node of the quert node
-    closest_anchor = G.nodes[result_downtrace[0]]['level']
-    result_downtrace = ['\t'+G.nodes[i]['value'][0][0] for i in result_downtrace]
-    print('The uptrace linear of {0} is:\n{1}'.format(query, '\n'.join(linear)))
-    print('The closest child anchor level is: {0} '.format(closest_anchor))
-    print('The closest children are:\n{0}'.format('\n'.join(result_downtrace)))
-'''

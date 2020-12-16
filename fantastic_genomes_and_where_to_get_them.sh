@@ -47,7 +47,7 @@ cat ncbi_Virus_genomes_download.txt | parallel -j 4 wget -q -c '{}' --directory-
 # Download GRCh38.p13
 wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/001/405/GCF_000001405.39_GRCh38.p13/GCF_000001405.39_GRCh38.p13_genomic.fna.gz
 # Create the gtdb style taxonomy file
-cat RS_GCA_000001405.28	d__Metazoa;p__Chordata;c__Mammalia;o__Primates;f__Hominidae;g__Homo;s__Homo_sapiens > ncbi_hg38_gtdb_taxonomy.txt
+echo -e "RS_GCA_000001405.28\td__Metazoa;p__Chordata;c__Mammalia;o__Primates;f__Hominidae;g__Homo;s__Homo_sapiens" > ncbi_hg38_gtdb_taxonomy.txt
 
 # Download the latest GTDB data
 wget https://data.ace.uq.edu.au/public/gtdb/data/releases/release89/89.0/gtdbtk_r89_data.tar.gz
@@ -101,7 +101,7 @@ done
 
 # Let's run tax_from_gtdb.py again to add taxid to all genomes
 # It will take a decent time to run
-tax_from_gtdb.py --gtdb gtdb_AllMicro_taxonomy.txt --assemblies genomes/unlabeled --nodes toifa.tree -names toifa.name --kraken_dir genomes_kk2
+tax_from_gtdb.py --gtdb gtdb_AllMicro_taxonomy.txt --assemblies genomes_unlabeled --nodes toifa.tree -names toifa.name --kraken_dir genomes_kk2
 
 # We can now add those genomes to the kraken2 library
 find genomes_kk2/ -name '*.fa' -print0 | xargs -0 -I{} -n1 kraken2-build --add-to-library {} --db theOneIndexForAll
